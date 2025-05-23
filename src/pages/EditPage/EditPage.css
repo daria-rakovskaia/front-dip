@@ -1,0 +1,41 @@
+.code-editor {
+    width: 100%;
+    max-width: 800px;
+    height: 500px;
+    padding: 25px;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1rem;
+    color: #2d3748;
+    line-height: 1.5;
+    resize: vertical;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    tab-size: 4;
+}
+
+.code-editor:focus {
+    outline: none;
+    border-color: #4b9e9b;
+    box-shadow: 0 0 0 3px rgba(75, 158, 155, 0.1);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .code-editor {
+        height: 400px;
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .upload-title {
+        font-size: 2rem;
+    }
+    
+    .upload-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}

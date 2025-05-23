@@ -1,0 +1,91 @@
+.fullscreen-editor {
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Consolas', monospace;
+}
+
+.editor-title {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.unified-editor {
+    flex: 1;
+    padding: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    tab-size: 4;
+    white-space: pre;
+    overflow: auto;
+    background: #f8fafc;
+}
+
+.unified-editor:focus {
+    outline: none;
+    border-color: #4b9e9b;
+    box-shadow: 0 0 0 2px rgba(75, 158, 155, 0.2);
+}
+
+.editor-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.save-button, .pdf-button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.save-button {
+    background: #2563eb;
+    color: white;
+}
+
+.pdf-button {
+    background: #dc2626;
+    color: white;
+}
+
+.save-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.pdf-button:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .fullscreen-editor {
+        padding: 10px;
+    }
+    
+    .editor-title {
+        font-size: 1.5rem;
+    }
+    
+    .unified-editor {
+        font-size: 12px;
+        padding: 10px;
+    }
+    
+    .save-button, .pdf-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
