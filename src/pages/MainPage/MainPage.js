@@ -1,4 +1,3 @@
-import React from "react";
 import './MainPage.css';
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +13,8 @@ const MainPage = () => {
                 Загрузить работу
             </button>
             <button
-                className="button">
+                className="button"
+                onClick={() => navigate("/reports")}>
                 Результаты проверки
             </button>
         </div>

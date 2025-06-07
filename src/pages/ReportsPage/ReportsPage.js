@@ -1,104 +1,170 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './ReportsPage.css';
+import config from '../../config.js';
 
-export default function ReportsPage() {
-    // Состояния для фильтров
-    const [selectedGroup, setSelectedGroup] = useState('');
-    const [selectedStudent, setSelectedStudent] = useState('');
-    const [selectedModule, setSelectedModule] = useState('');
+const ResultsPage = () => {
+    const [filteredResults, setFilteredResults] = useState([]);
+    const [results, setResults] = useState([]);
+    useEffect(() => {
+        const fetchResults = async () => {
+            try {
+                const response = await axios.get(config.resultUrl);
+                const formattedResults = response.data.map(result => ({
+                    student: `${result.student.surname} ${result.student.name} ${result.student.patronymic}`,
+                    group: result.student.group.name,
+                    module: result.task.variant.module,
+                    workCode: result.task.variantId,
+                    task: result.task.taskNum,
+                    workResult: result.analysisRes
+                }));
+                setResults(formattedResults);
+                setFilteredResults(formattedResults);
+            }
+            catch (error) {
+                console.error("Ошибка при получении результатов:", error);
+                alert("Не удалось получить результаты");
+            }
+        };
+        fetchResults();
+    }, []);
 
-    // Тестовые данные
-    const groups = ['Группа 1', 'Группа 2', 'Группа 3'];
-    const students = ['Иванов Иван Иванович', 'Петров Петр', 'Сидорова Анна'];
-    const modules = ['Модуль 1: Основы', 'Модуль 2: Продвинутый', 'Модуль 3: Эксперт'];
+    const [fioFilter, setFioFilter] = useState('');
+    const [moduleFilter, setModuleFilter] = useState('');
+    useEffect(() => {
+        const filtered = results.filter(result => {
+            const matchesFio = fioFilter ?
+                result.student.toLowerCase().includes(fioFilter.toLowerCase()) : true;
+            const matchesModule = moduleFilter ?
+                result.module.toString().includes(moduleFilter) : true;
+            return matchesFio && matchesModule;
+        });
+        setFilteredResults(filtered);
+    }, [fioFilter, moduleFilter, results]);
 
-    // Тестовые данные таблицы
-    const [assignments] = useState([
-        { student: 'Иванов Иван Иванович', task: 3, link: '/check/123', module: '2' },
-        { student: 'Петров Петр Петрович', task: 5, link: '/check/124', module: '2' },
-        { student: 'Сидорова Анна Александровна', task: 3, link: '/check/125', module: '4' },
-        { student: 'Иванов Иван Иванович', task: 4, link: '/check/126', module: '2' },
-    ]);
+    const [selectedResult, setSelectedResult] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleViewResult = (result) => {
+        setSelectedResult(result);
+        setIsModalOpen(true);
+    };
 
-    // Фильтрация данных
-    const filteredData = assignments.filter(item => {
-        return (!selectedGroup || item.group === selectedGroup) &&
-               (!selectedStudent || item.student === selectedStudent) &&
-               (!selectedModule || item.module === selectedModule);
-    });
+    const handleExportPDF = async () => {
+        try {
+            const baseName = `${selectedResult.group}_${selectedResult.student}_${selectedResult.workCode}_${selectedResult.task}.pdf`;
+            const response = await axios.post(
+                config.pdfUrl,
+                {
+                    result: selectedResult.workResult,
+                    outputPath: baseName
+                },
+                {
+                    responseType: 'blob'
+                }
+            );
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            let fileName = baseName;
+            if (response.headers['content-disposition']) {
+                const headerFileName = response.headers['content-disposition']
+                    .split('filename=')[1]
+                    .replace(/["']/g, '');
+                if (headerFileName) fileName = headerFileName;
+            }
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Ошибка при формировании PDF:", error);
+            alert("Не удалось сформировать PDF");
+        }
+    };
 
     return (
         <div className="reports-container">
-            <h1 className="reports-title">Результаты проверок</h1>
-            
-            {/* Блок фильтров */}
+            <h1 className="reports-title">Результаты проверки</h1>
             <div className="filters-container">
-                <select 
-                    className="filter-select"
-                    value={selectedGroup}
-                    onChange={(e) => setSelectedGroup(e.target.value)}
-                >
-                    <option value="">Все группы</option>
-                    {groups.map((group, index) => (
-                        <option key={index} value={group}>{group}</option>
-                    ))}
-                </select>
-                
-                <select
-                    className="filter-select"
-                    value={selectedStudent}
-                    onChange={(e) => setSelectedStudent(e.target.value)}
-                >
-                    <option value="">Все студенты</option>
-                    {students.map((student, index) => (
-                        <option key={index} value={student}>{student}</option>
-                    ))}
-                </select>
-                
-                <select
-                    className="filter-select"
-                    value={selectedModule}
-                    onChange={(e) => setSelectedModule(e.target.value)}
-                >
-                    <option value="">Все модули</option>
-                    {modules.map((module, index) => (
-                        <option key={index} value={module}>{module}</option>
-                    ))}
-                </select>
+                <div>
+                    <input
+                        type="text"
+                        className="filter-input"
+                        placeholder="Введите ФИО"
+                        value={fioFilter}
+                        onChange={(e) => setFioFilter(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <input
+                        type="text"
+                        className="filter-input"
+                        placeholder="Введите номер модуля"
+                        value={moduleFilter}
+                        onChange={(e) => setModuleFilter(e.target.value)}
+                    />
+                </div>
             </div>
-
-            {/* Таблица с результатами */}
             <div className="table-container">
                 <table className="assignments-table">
                     <thead>
                         <tr>
                             <th>Студент</th>
-                            <th>№ задания</th>
-                            <th>Результат проверки</th>
                             <th>Модуль</th>
+                            <th>Код работы</th>
+                            <th>Задача</th>
+                            <th>Результат</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData.map((item, index) => (
+                        {filteredResults.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.student}</td>
+                                <td>{item.module}</td>
+                                <td>{item.workCode}</td>
                                 <td>{item.task}</td>
                                 <td>
-                                    <a 
-                                        href={item.link} 
+                                    <button
                                         className="result-link"
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
+                                        onClick={() => handleViewResult(item)}
                                     >
                                         Посмотреть результат
-                                    </a>
+                                    </button>
                                 </td>
-                                <td>{item.module}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            {isModalOpen && selectedResult && (
+                <div className="fullscreen-modal">
+                    <div className="modal-header">
+                        <h2 className="modal-title">
+                            Результат работы: {selectedResult.student}, {selectedResult.group}
+                        </h2>
+                        <div className="modal-actions">
+                            <button
+                                className="PDF-button"
+                                onClick={handleExportPDF}
+                            >
+                                PDF
+                            </button>
+                            <button
+                                className="upload-button"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                    <div className="modal-content">
+                        <pre className="result-content">{selectedResult.workResult}</pre>
+                    </div>
+                </div>
+            )}
         </div>
     );
-}
+};
+
+export default ResultsPage;

@@ -1,18 +1,19 @@
-import React from 'react';
 import MainPage from './pages/MainPage/MainPage';
 import UploadPage from './pages/LoadPage/UploadPage';
-import CodeEditor from './pages/EditPage/EditPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CodeAnalysisPage from './pages/CodeAnalysisPage/CodeAnalysisPage';
+import EditPage from './pages/EditPage/EditPage';
+import ResultPage from './pages/ResultPage/ResultPage';
 import ReportsPage from './pages/ReportsPage/ReportsPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ReportsPage />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/upload" element={<UploadPage />} />
-        
+        <Route path="/editCode" element={<EditPage />} />
+        <Route path="/result" element={<ResultPage />} />
+        <Route path="/reports" element={<ReportsPage />} />
       </Routes>
     </Router>
   );
