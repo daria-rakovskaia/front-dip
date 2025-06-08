@@ -39,11 +39,6 @@
     margin-left: 30px;
 }
 
-.upload-button {
-    width: 160px;
-    margin-right: 10px;
-}
-
 .PDF-button {
     margin-right: 10px;
     background-color: #ff0000;
@@ -75,6 +70,24 @@
 }
 
 .exit-button:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+}
+
+.save-button {
+    margin-right: 10px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.save-button:hover {
     background-color: #1d4ed8;
     transform: scale(1.05);
 }

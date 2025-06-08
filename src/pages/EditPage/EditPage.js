@@ -115,7 +115,7 @@ const EditPage = () => {
                         onChange={(e) => setCode(e.target.value)}
                     />
                     <button
-                        className="upload-button"
+                        className="submit-button"
                         onClick={handleSubmit}
                     >
                         Подтвердить

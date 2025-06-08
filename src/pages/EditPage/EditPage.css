@@ -150,6 +150,20 @@
     box-shadow: 0 0 0 4px rgba(75, 158, 155, 0.2);
 }
 
-.upload-button {
+.submit-button {
     width: 200px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
 }

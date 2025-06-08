@@ -1,22 +1,24 @@
-const api_host = "localhost";
-const sharp_api_port = 5046;
+// const api_host = "localhost";
+const sharp_api_port = 5000;
 const python_api_port = 8000;
+const sharp_api_host = "213.108.4.154";
+const python_api_host = "45.144.175.171";
 
 const config = {
-    teacherUrl: `http://${api_host}:${sharp_api_port}/api/Teacher`,
-    groupUrl: `http://${api_host}:${sharp_api_port}/api/Group`,
-    studentUrl: `http://${api_host}:${sharp_api_port}/api/Student`,
-    variantUrl: `http://${api_host}:${sharp_api_port}/api/Variant`,
-    examTaskUrl: `http://${api_host}:${sharp_api_port}/api/ExamTask`,
-    resultUrl: `http://${api_host}:${sharp_api_port}/api/Result`,
-    pdfUrl: `http://${api_host}:${sharp_api_port}/api/PDF`,
+    teacherUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Teacher`,
+    groupUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Group`,
+    studentUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Student`,
+    variantUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Variant`,
+    examTaskUrl: `http://${sharp_api_host}:${sharp_api_port}/api/ExamTask`,
+    resultUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Result`,
+    pdfUrl: `http://${sharp_api_host}:${sharp_api_port}/api/PDF`,
 
-    ocrUrl: `http://${api_host}:${python_api_port}/api/v1/recognize`,
-    postprocessUrl: `http://${api_host}:${python_api_port}/api/v1/postprocess-text`,
-    getFileUrl: `http://${api_host}:${python_api_port}/api/v1/get-file-url`,
+    ocrUrl: `http://${python_api_host}:${python_api_port}/api/v1/recognize`,
+    postprocessUrl: `http://${python_api_host}:${python_api_port}/api/v1/postprocess-text`,
+    getFileUrl: `http://${python_api_host}:${python_api_port}/api/v1/get-file-url`,
 
-    staticAnalysisUrl: `http://${api_host}:${sharp_api_port}/api/Analysis`,
-    aiAnalysisUrl: `http://${api_host}:${python_api_port}/api/v1/analyze-code`
+    staticAnalysisUrl: `http://${sharp_api_host}:${sharp_api_port}/api/Analysis`,
+    aiAnalysisUrl: `http://${python_api_host}:${python_api_port}/api/v1/analyze-code`
 };
 
 export default config;

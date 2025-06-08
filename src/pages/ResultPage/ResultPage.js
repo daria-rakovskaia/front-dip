@@ -142,7 +142,7 @@ ${aiResult}`
             </div>
             <div className='buttons'>
                 <button
-                    className="upload-button"
+                    className="save-button"
                     onClick={handleSave}
                 >
                     Сохранить
